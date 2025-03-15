@@ -11,8 +11,13 @@ namespace EmpDB
         private decimal baseSalary; // base salary per week
 
         // six-parameter constructor
-        public BasePlusCommissionEmployee(string firstName, string lastName, string socialSecurityNumber,
-            decimal grossSales, decimal commissionRate, decimal baseSalary)
+        public BasePlusCommissionEmployee(
+            string firstName, 
+            string lastName, 
+            string socialSecurityNumber,
+            decimal grossSales, 
+            decimal commissionRate, 
+            decimal baseSalary)
             : base(firstName, lastName, socialSecurityNumber, grossSales, commissionRate)
         {
             BaseSalary = baseSalary; // validate base salary

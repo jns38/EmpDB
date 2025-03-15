@@ -20,7 +20,7 @@ namespace EmpDB
             decimal weeklySalary)
             : base(firstName, lastName, socialSecurityNumber)
         {
-            weeklySalary = weeklySalary; 
+            WeeklySalary = weeklySalary; 
         }
 
         // property that get and set salaried employee's salary
@@ -53,8 +53,10 @@ namespace EmpDB
         // return string representation of Salaried Employee object
         public override string ToString()
         {
-            string display_str = $"Salaried Employee: {base.ToString()}\n";
-            display_str += $"Weekly{WeeklySalary:C}\n";
+            string display_str = "********* Salaried Employee *********\n";
+            display_str += base.ToString();
+            display_str += $"Weekly Salary{WeeklySalary:C}\n";
+            display_str += $"Earned: {Earnings():C}\n";
 
             return display_str;
         }

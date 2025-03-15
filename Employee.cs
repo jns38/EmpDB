@@ -22,13 +22,13 @@ namespace EmpDB
         // return string representation of Employee object, using properties
         public override string ToString()
         {
-            string display_str = "******** Employee Payroll Record ********\n";
-            display_str += $"{FirstName} {LastName}\n";
+            string display_str = $"Name: {FirstName} {LastName}\n";
             display_str += $"Social Security Number: {SocialSecurityNumber}\n";
 
             return display_str;
         }
 
-        public abstract decimal Earnings(); 
+        public abstract decimal Earnings();
+
     }
 }

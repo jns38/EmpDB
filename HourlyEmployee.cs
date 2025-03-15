@@ -79,9 +79,11 @@ namespace EmpDB
         // return string representation of HourlyEmployee object
         public override string ToString()
         {
-            string display_str = $"Hourly Employee: {base.ToString()}\n";
+            string display_str = "********* Hourly Employee *********\n";
+            display_str += base.ToString();
             display_str += $"Hourly Wage: {Wage:C}\n";
             display_str += $"Hours Worked: {Hours:F2}\n";
+            display_str += $"Earned: {Earnings():C}\n";
 
             return display_str;
         }
