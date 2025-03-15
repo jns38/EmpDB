@@ -84,15 +84,33 @@ namespace EmpDB
         public void EmployeeDb()
         {
             SalariedEmployee emp1 = new SalariedEmployee(
+                firstName: "Alice",
+                lastName: "Albert",
+                socialSecurityNumber: "111-11-1111",
+                weeklySalary: 800.00M
                 );
 
             SalariedEmployee emp2 = new SalariedEmployee(
+                firstName: "Benjamin",
+                lastName: "Brown",
+                socialSecurityNumber: "222-22-2222",
+                weeklySalary: 750.00M
                 );
 
             HourlyEmployee emp3 = new HourlyEmployee(
+                firstName: "Cathy",
+                lastName: "Carter",
+                socialSecurityNumber: "333-33-3333",
+                hourlyWage: 16.75M,
+                hoursWorked: 40.0M
                 );
 
             HourlyEmployee emp4 = new HourlyEmployee(
+                firstName: "David",
+                lastName: "Davis",
+                socialSecurityNumber: "444-44-4444",
+                hourlyWage: 18.50M,
+                hoursWorked: 42.0M
                 );
 
             CommissionEmployee emp5 = new CommissionEmployee(

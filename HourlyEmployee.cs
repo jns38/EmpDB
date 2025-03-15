@@ -22,7 +22,7 @@ namespace EmpDB
             : base(firstName, lastName, socialSecurityNumber)
         {
             Wage = hourlyWage;
-            hours = hoursWorked;
+            Hours = hoursWorked;
         }
 
         // property that gets and sets hourly employee's wage
@@ -36,7 +36,7 @@ namespace EmpDB
                 if (value < 0)
                 {
                     throw new ArgumentOutOfRangeException(nameof(value),
-                        value, $"{nameof(Wage)} must be >= 0)";
+                        value, $"{nameof(Wage)} must be >= 0)");
                 }
 
                 wage = value;
@@ -55,7 +55,7 @@ namespace EmpDB
                 if (value < 0 || value > 168)
                 {
                     throw new ArgumentOutOfRangeException(nameof(value),
-                        value, $"{nameof(Hours)} must be >= 0 and <= 168)";
+                        value, $"{nameof(Hours)} must be >= 0 and <= 168)");
                 }
 
                 hours = value;
