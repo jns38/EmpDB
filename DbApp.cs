@@ -14,6 +14,7 @@ namespace EmpDB
     internal class DbApp
     {
         private List<Employee> employees = new List<Employee>();
+        private decimal totalPayroll;
 
         public void ReadEmployeeDataFromInputFile()
         {
@@ -382,6 +383,8 @@ namespace EmpDB
             }
         }
 
+        
+
         // Print all employee payroll records in json file
         private void PrintAllEmployeeRecords()
         {
@@ -390,7 +393,10 @@ namespace EmpDB
             {
                 Console.Write(employee);
                 Console.WriteLine($"Earned: {employee.Earnings():C}\n");
+                totalPayroll += employee.Earnings();
             }
+            Console.WriteLine($"Total Payroll: {totalPayroll:C}");
+            Console.WriteLine();
             Console.WriteLine("***** Done printing *****\n");
 
         }
