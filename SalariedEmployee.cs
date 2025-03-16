@@ -54,8 +54,7 @@ namespace EmpDB
         // return string representation of Salaried Employee object
         public override string ToString() =>
             $"Salaried Employee: {base.ToString()}" +
-            $"Weekly Salary{WeeklySalary:C}\n" +
-            $"Earned: {Earnings():C}\n";
+            $"Weekly Salary{WeeklySalary:C}\n";
 
     }
 }

@@ -388,7 +388,8 @@ namespace EmpDB
             Console.WriteLine("***** Printing all employee payroll records in file *****\n");
             foreach (var employee in employees)
             {
-                Console.WriteLine(employee);
+                Console.Write(employee);
+                Console.WriteLine($"Earned: {employee.Earnings():C}\n");
             }
             Console.WriteLine("***** Done printing *****\n");
 
