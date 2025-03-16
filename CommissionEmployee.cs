@@ -1,4 +1,6 @@
-﻿using System;
+﻿using JsonSubTypes;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,6 +13,7 @@ namespace EmpDB
         //comment
         private decimal grossSales; // gross weekly sales
         private decimal commissionRate; // commission percentage
+
 
         // five-parameter contructor
         public CommissionEmployee(string firstName, string lastName, string socialSecurityNumber,
@@ -62,8 +65,8 @@ namespace EmpDB
 
         // return string representation of CommissionEmployee object
         public override string ToString() =>
-                   $"Commission employee: {base.ToString()}\n" +
-                   $"Gross sales: {GrossSales:C}\n" +
-                   $"Commission rate: {CommissionRate:F2}";
+            $"Commission employee: {base.ToString()}" +
+            $"Gross sales: {GrossSales:C}\n" +
+            $"Commission rate: {CommissionRate:F2}\n";
     }
 }

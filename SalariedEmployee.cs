@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -51,15 +52,10 @@ namespace EmpDB
         }
 
         // return string representation of Salaried Employee object
-        public override string ToString()
-        {
-            string display_str = "********* Salaried Employee *********\n";
-            display_str += base.ToString();
-            display_str += $"Weekly Salary{WeeklySalary:C}\n";
-            display_str += $"Earned: {Earnings():C}\n";
-
-            return display_str;
-        }
+        public override string ToString() =>
+            $"Salaried Employee: {base.ToString()}" +
+            $"Weekly Salary{WeeklySalary:C}\n" +
+            $"Earned: {Earnings():C}\n";
 
     }
 }

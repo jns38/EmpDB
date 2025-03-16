@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml;
+//using System.Xml;
 using Newtonsoft.Json;
 using System.Diagnostics.Metrics;
 using System.Diagnostics;
@@ -17,28 +17,21 @@ namespace EmpDB
 
         public void ReadEmployeeDataFromInputFile()
         {
-            try
+            string json = File.ReadAllText(Constants.EmployeePayrollOutputJSONFile);
+            employees = JsonConvert.DeserializeObject<List<Employee>>(json, new JsonSerializerSettings
             {
-                // read the JSON file as a string and deserialize it back
-                // into Student sub-type objects and place them into
-                // the students List
-                string jsonFromFile = File.ReadAllText(Constants.EmployeePayrollOutputJSONFile);
-                // null coalesce
-                employees = JsonConvert.DeserializeObject<List<Employee>>(jsonFromFile) ?? new List<Employee>();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error reading file: {ex.Message}");
-            }
+                TypeNameHandling = TypeNameHandling.All
+            }) ?? new List<Employee>();
         }
 
-        //private void WriteDataToOutputFile()
-        //{
-        //    // Creates a JSON style string of alll Student types in students List
-        //    // and saves the file
-        //    string json = JsonConvert.SerializeObject(employees, Formatting.Indented);
-        //    File.WriteAllText(Constants.EmployeePayrollOutputJSONFile, json);
-        //}
+        private void WriteDataToOutputFile()
+        {
+            string json = JsonConvert.SerializeObject(employees, Formatting.Indented, new JsonSerializerSettings
+            {
+                TypeNameHandling = TypeNameHandling.All
+            });
+            File.WriteAllText(Constants.EmployeePayrollOutputJSONFile, json);
+        }
 
         public void RunDatabaseApp()
         {
@@ -53,7 +46,7 @@ namespace EmpDB
                 {
                     case 'a':
                         // Add a record
-                        //AddEmployeeRecord();
+                        AddEmployeeRecord();
                         break;
                     case 'f':
                         // Find a record
@@ -65,7 +58,7 @@ namespace EmpDB
                         break;
                     case 'd':
                         // Delete a record
-                       // DeleteEmployeeRecord();
+                        DeleteEmployeeRecord();
                         break;
                     case 'p':
                         // Print all records
@@ -73,7 +66,7 @@ namespace EmpDB
                         break;
                     case 's':
                         // Save and exit
-                        //SaveStudentDataAndExit();
+                        SaveEmployeeDataAndExit();
                         break;
                     case 'e':
                         // Exit without saving
@@ -86,6 +79,8 @@ namespace EmpDB
             }
         }
 
+
+        // Check if user input SSN exists
         private Employee? CheckIfSsnExists(string ssn)
         {
             var employee = employees.FirstOrDefault(employee => employee.SocialSecurityNumber == ssn);
@@ -99,10 +94,121 @@ namespace EmpDB
             else
             {
                 // Found it!
-                Console.WriteLine($"FOUND email address: {ssn}\n");
+                Console.WriteLine($"FOUND SSN: {ssn}\n");
                 return employee;
             }
         }
+
+        // Add new Employee Payroll Record
+        private void AddEmployeeRecord()
+        {
+            // First, search if employee already exists
+            Console.Write("Enter SSN to add: ");
+            string ssn = Console.ReadLine();
+            var employee = CheckIfSsnExists(ssn);
+            if (employee == null)
+            {
+                // Record was NOT FOUND -- go ahead and add
+                Console.WriteLine($"Adding new employee w/ SSN: {ssn}");
+
+                // Gather initial employee data
+                // Get first name
+                Console.Write("Enter first name: ");
+                string first = Console.ReadLine();
+
+                //Get last name
+                Console.Write("Enter last name: ");
+                string last = Console.ReadLine();
+
+                // Already have SSN
+
+                // Get employee type
+                Console.Write("[S]alaried, [H]ourly, [C]ommission, or [B]ase plus commission? ");
+                string employeeType = Console.ReadLine();
+
+                // Branch out to employee type
+                if (employeeType.ToLower() == "s")
+                {
+                    // Salaried employee
+                    Console.Write("Enter weekly salary: ");
+                    decimal weeklySal = Convert.ToDecimal(Console.ReadLine());
+
+                    SalariedEmployee salariedEmp = new SalariedEmployee(
+                      firstName: first,
+                      lastName: last,
+                      socialSecurityNumber: ssn,
+                      weeklySalary: weeklySal
+                      );
+                    employees.Add(salariedEmp);
+                }   
+                else if (employeeType.ToLower() == "h")
+                {
+                    // Hourly employee
+                    Console.Write("Enter hourly wage: ");
+                    decimal hrlyWage = Convert.ToDecimal(Console.ReadLine());
+
+                    Console.Write("Enter hours worked: ");
+                    decimal hrsWorked = Convert.ToDecimal(Console.ReadLine());
+
+                    HourlyEmployee hourlyEmp = new HourlyEmployee(
+                       firstName: first,
+                       lastName: last,
+                       socialSecurityNumber: ssn,
+                       hourlyWage: hrlyWage,
+                       hoursWorked: hrsWorked
+                       );
+                    employees.Add(hourlyEmp);
+                }
+                else if (employeeType.ToLower() == "c")
+                {
+                    // Commission employee
+                    Console.Write("Enter gross sales: ");
+                    decimal gSales = Convert.ToDecimal(Console.ReadLine());
+
+                    Console.Write("Enter commission rate: ");
+                    decimal comRate = Convert.ToDecimal(Console.ReadLine());
+
+                    CommissionEmployee commissionEmp = new CommissionEmployee(
+                      firstName: first,
+                      lastName: last,
+                      socialSecurityNumber: ssn,
+                      grossSales: gSales,
+                      commissionRate: comRate
+                      );
+                    employees.Add(commissionEmp);
+                }
+                else if (employeeType.ToLower() == "b")
+                {
+                    // Base plus commission employee
+                    Console.Write("ENTER gross sales: ");
+                    decimal gSales = Convert.ToDecimal(Console.ReadLine());
+
+                    Console.Write("ENTER commission rate: ");
+                    decimal comRate = Convert.ToDecimal(Console.ReadLine());
+
+                    Console.Write("ENTER base salary: ");
+                    decimal baseSal = Convert.ToDecimal(Console.ReadLine());
+
+                    BasePlusCommissionEmployee basecommissionEmp = new BasePlusCommissionEmployee(
+                      firstName: first,
+                      lastName: last,
+                      socialSecurityNumber: ssn,
+                      grossSales: gSales,
+                      commissionRate: comRate,
+                      baseSalary: baseSal
+                      );
+                    employees.Add(basecommissionEmp);
+                }
+            }
+            else
+            {
+                Console.WriteLine($"RECORD FOUND! Can't add employee's {ssn}!");
+                Console.WriteLine("Record already exists!");
+            }
+        }
+
+
+        // Finds Employee Records based on SSN user inputs
         private void FindEmployeeRecord()
         {
             // Ask user for SSN to search for 
@@ -116,6 +222,7 @@ namespace EmpDB
 
         }
 
+        // Modify employee payroll record for the SSN user inputs
         private void ModifyEmployeeRecord()
         {
             // Ask user for SSN to modify or update
@@ -227,22 +334,73 @@ namespace EmpDB
                         }
                     }
                 }
-                
+                Console.WriteLine();
+                Console.WriteLine($"{employee.FirstName}'s modification was successful");
+                Console.WriteLine();
+
             }
         }
 
+        // Delete Employee Payroll Record for SSN that user inputed
+        private void DeleteEmployeeRecord()
+        {
+            bool remove = false;
+            while (!remove)
+            {
+                Console.Write("Please enter the social security number of employee to delete: ");
+                string ssn = Console.ReadLine();
+                var employee = CheckIfSsnExists(ssn);
+                if (employee != null)
+                {
+                    Console.WriteLine(employee);
+                    Console.Write("Is this the employee record you wish to delete, [C]onfirm or [D]eny: ");
+                    string input = Console.ReadLine();
+
+                    if (input.ToLower() == "c")
+                    {
+                        employees.Remove(employee);
+                        remove = true;
+                        Console.WriteLine();
+                        Console.Write($"Employee with SNN {ssn} deleted successfully.\n");
+                    }
+                    else if (input.ToLower() == "d") 
+                    {
+                        Console.Write("\n[S]earch for another employee record to delete, " +
+                            "or press ENTER to return to the main menu: ");
+                        string choice = Console.ReadLine();
+                        if (choice.ToLower() == "s")
+                        {
+                            remove = false;
+                        }
+                        else
+                        {
+                            remove = true;
+                        }
+                    }
+
+                }
+            }
+        }
+
+        // Print all employee payroll records in json file
         private void PrintAllEmployeeRecords()
         {
-            Console.Write("***** Printing all employee payroll records in file *****");
-            Console.WriteLine();
+            Console.WriteLine("***** Printing all employee payroll records in file *****\n");
             foreach (var employee in employees)
             {
                 Console.WriteLine(employee);
             }
-            Console.WriteLine("***** Done printing *****");
+            Console.WriteLine("***** Done printing *****\n");
 
         }
 
+        // Save current records in json file and exits
+        private void SaveEmployeeDataAndExit()
+        {
+            Console.WriteLine("Saving data and exiting.");
+            WriteDataToOutputFile();
+            Environment.Exit(0);
+        }
 
         private void DisplayMainMenu()
         {

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using JsonSubTypes;
+using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -40,8 +42,13 @@ namespace EmpDB
                 baseSalary = value;
             }
         }
+
         // calculate earnings
         public override decimal Earnings() => BaseSalary + base.Earnings(); // base class earnings + base salary
 
+        // return string representation of BasePlusCommissionEmployee object
+        public override string ToString() =>
+            $"Base-Salaried {base.ToString()}" +
+            $"Base Salary: {BaseSalary:C}\n";
     }
 }
