@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using EmpDB;
 
 namespace EmpDB
 {
@@ -11,19 +12,25 @@ namespace EmpDB
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string SocialSecurityNumber { get; set; }
-
-        public Employee(string firstName,string lastName,string socialSecurityNumber)
+       
+        public Employee(string firstName, string lastName, string socialSecurityNumber)
         {
-            FirstName = firstName;
-            LastName = lastName;
-            SocialSecurityNumber = socialSecurityNumber;
+            this.FirstName = firstName;
+            this.LastName = lastName;
+            this.SocialSecurityNumber = socialSecurityNumber;
         }
 
+        // return string representation of Employee object, using properties
         public override string ToString()
         {
-            $"{FirstName} {LastName}\n" + $"social security number: {SocialSecurityNumber}";
+            string display_str = $"{FirstName} {LastName}\n";
+            display_str += $"Social Security Number: {SocialSecurityNumber}\n";
+
+            return display_str;
         }
 
+        public abstract decimal Earnings();
 
     }
 }
+
